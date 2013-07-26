@@ -3,22 +3,11 @@ var CANVAS_HEIGHT = 480;
 var BALL_SPEED = 300; // 300 px per second
 
 document.addEventListener('keydown', function(e){
-	if (e.keyCode == 32){
+	if (e.keyCode == 32){ // Space
 		init();
 	}
 
 });
-
-
-
-/*
-window.blur = function(){
-
-	alert("page hidden");
-};
-*/
-
-
 
 var player = {
 	pos: [0, 215],
@@ -71,7 +60,7 @@ var requestAnimFrame = (function(){ // RequestAnimationFrame multi-browser
     || function(callback){ window.setTimeout(callback, 1000 / 60); };
 })();
 
-function init(){ // Function called by Start button
+function init(){ // Function called by Start button or space
 
 	if (gameState == 0){
 		
@@ -143,6 +132,27 @@ function update(diff){
 
 }
 
+function updateBall(diff){
+
+
+	if (ball.pos[1] >= 470){
+		ball.speed[1] = -BALL_SPEED;
+	}
+
+	if (ball.pos[1] <= 0){
+		ball.speed[1] = BALL_SPEED;
+	}
+
+	/*
+	ball.pos[0] += Math.round(ball.speed[0] * diff);
+	ball.pos[1] += Math.round(ball.speed[1] * diff);
+	*/
+	ball.pos[0] += ball.speed[0] * diff;
+	ball.pos[1] += ball.speed[1] * diff;
+
+}
+
+
 function updatePlayers(diff){
 
     if((input.isDown('DOWN') || input.isDown('s')) && (player.pos[1] + player.sprite.size[1]) <= CANVAS_HEIGHT) {
@@ -169,25 +179,6 @@ function updatePlayers(diff){
 }
 
 
-function updateBall(diff){
-
-
-	if (ball.pos[1] >= 470){
-		ball.speed[1] = -BALL_SPEED;
-	}
-
-	if (ball.pos[1] <= 0){
-		ball.speed[1] = BALL_SPEED;
-	}
-
-	/*
-	ball.pos[0] += Math.round(ball.speed[0] * diff);
-	ball.pos[1] += Math.round(ball.speed[1] * diff);
-	*/
-	ball.pos[0] += ball.speed[0] * diff;
-	ball.pos[1] += ball.speed[1] * diff;
-
-}
 
 function collisions(){
 
@@ -277,10 +268,10 @@ function renderBall(){
 
 
 function pauseGame(){
-	gameState = 0;
+	gameState = 0; // <- Lets the loop end but the next one will need to wait until space is pressed.
 	ctx.save();
 	ctx.fillStyle = "white";
-	ctx.fillText("Press 'space' for resuming the game", 235, 260);
+	ctx.fillText("Press 'space'", 300, 260);
 	ctx.restore();
 	document.getElementById("stop_but").blur();
 }
