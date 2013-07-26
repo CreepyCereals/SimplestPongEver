@@ -1,2 +1,2 @@
-The sound was made with:
+Audio generated with:
 http://www.bfxr.net/
