@@ -271,7 +271,7 @@ function pauseGame(){
 	gameState = 0; // <- Lets the loop end but the next one will need to wait until space is pressed.
 	ctx.save();
 	ctx.fillStyle = "white";
-	ctx.fillText("Press 'space'", 300, 260);
+	ctx.fillText("Press 'space'", 285, 260);
 	ctx.restore();
 	document.getElementById("stop_but").blur();
 }
