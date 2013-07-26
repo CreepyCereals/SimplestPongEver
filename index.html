@@ -1,0 +1,29 @@
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="css/styles.css">
+
+		<script type="text/javascript" src="js/eventsHandler.js"></script>
+		<script type="text/javascript" src="js/Sprite.js"></script>
+		<script type="text/javascript" src="js/game.js"></script>
+
+
+	</head>
+
+	<body onLoad = "createCanvas();">
+
+		<div id="canvas-container" style="border: 1px black solid; float:left; width: 640; height: 480"></div>
+		<div id="stuff" style="float: left">
+			Log:<br>
+			<div name="log" id="log"></div>
+			<input type="button" value="Start" onClick="init()">
+			<input type="button" id="stop_but" name="stop_but" value="Stop" onClick="pauseGame()">
+			<input type="button" value="Mute / Unmute" onclick="mute_unmute()"><br>
+			Hardness:<br>
+			<input type="button" value="Easy" onclick="setHardness(1)">
+			<input type="button" value="Normal" onclick="setHardness(2)">
+			<input type="button" value="Asian" onclick="setHardness(3)">
+		</div>
+	
+	</body>
+
+</html>
