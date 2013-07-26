@@ -47,7 +47,7 @@ var score = [0, 0];
 	score[1] -> Score of cpu
 */
 
-var ctx, lastUpdate, log, buffer, bufferContext;
+var ctx, lastUpdate, log;
 
 var sound = new Audio("wav/sound.wav"); // At colliding ball with player or cpu.
 
@@ -82,19 +82,14 @@ function createCanvas(){ // Function called by body.onload
 
 	canvas.width = CANVAS_WIDTH;
 	canvas.height = CANVAS_HEIGHT;
+	canvas.id = "canvas";
 
 	document.getElementById("canvas-container").appendChild(canvas);
 	ctx = canvas.getContext("2d");
-	
-	// Buffer
-	buffer = document.createElement("canvas");
-	buffer.width = CANVAS_WIDTH;
-	buffer.height = CANVAS_HEIGHT;
-	bufferContext = buffer.getContext("2d");
-	bufferContext.shadowColor = "white";	
+	ctx.font = "15px Arial";
 
-	ctx.fillStyle = "black";
-	ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+	ctx.shadowColor = "white";	
+	ctx.fillStyle = "white";
 	pauseGame();
 
 
@@ -103,9 +98,10 @@ function createCanvas(){ // Function called by body.onload
 function gameLoop(){
 		var now = Date.now();
 		var diff = (now - lastUpdate) / 1000;
+		var fps = Math.round(1 / diff);
 
 		update(diff); // Game Logic
-		draw(); // Render objects
+		draw(fps); // Render objects
 
 
 		lastUpdate = now;
@@ -125,9 +121,12 @@ function update(diff){
 	collisions();
 
 	// Updates the data displayed.
+	/*
 	log.innerHTML = "FPS: "+Math.round(1/ diff);
 	log.innerHTML += "<br>X: "+ball.pos[0] +", Y: "+ball.pos[1];
 	log.innerHTML += "<br>"+score[0] + " - " + score[1];
+	*/
+
 
 
 }
@@ -223,12 +222,13 @@ function newRound(){
 }
 
 
-function draw(){
+function draw(fps){
 
 
 	// Cleans the buffer
-	bufferContext.fillStyle = "black"
-	bufferContext.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+	ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+	ctx.fillText(fps, 610, 470);
 
 	// Redraws the players.
 	renderPlayers();
@@ -237,31 +237,26 @@ function draw(){
 	renderBall();
 
 
-	ctx.drawImage(buffer, 0, 0);
-
 
 }
 
 function renderPlayers(){
 
-	bufferContext.fillStyle = "white";
 	for (var i = 0; i < players.length; i++){
-		bufferContext.save(); // Since the bufferContext needs to be translated, save() & restore() are needed.
-		bufferContext.translate(players[i].pos[0], players[i].pos[1]);
-		players[i].sprite.render(bufferContext);
-		bufferContext.restore();
+		ctx.save(); // Since the ctx needs to be translated, save() & restore() are needed.
+		ctx.translate(players[i].pos[0], players[i].pos[1]);
+		players[i].sprite.render(ctx);
+		ctx.restore();
 	}
 }
 
 function renderBall(){
 
-	bufferContext.save();
-	bufferContext.shadowBlur = 15;
-	bufferContext.translate(ball.pos[0], ball.pos[1]);
-	//bufferContext.shadowOffsetX = -(ball.speed[0]) / 200;
-	//bufferContext.shadowOffsetY = -(ball.speed[1]) / 200;
-	ball.sprite.render(bufferContext);
-	bufferContext.restore();
+	ctx.save();
+	ctx.shadowBlur = 15;
+	ctx.translate(ball.pos[0], ball.pos[1]);
+	ball.sprite.render(ctx);
+	ctx.restore();
 }
 
 
@@ -270,7 +265,6 @@ function renderBall(){
 function pauseGame(){
 	gameState = 0; // <- Lets the loop end but the next one will need to wait until space is pressed.
 	ctx.save();
-	ctx.fillStyle = "white";
 	ctx.fillText("Press 'space'", 285, 260);
 	ctx.restore();
 	document.getElementById("stop_but").blur();
