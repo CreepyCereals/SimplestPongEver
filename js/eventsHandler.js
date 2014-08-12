@@ -1,5 +1,5 @@
 /*
-    Code taked from: https://github.com/jlongster/canvas-game-bootstrap
+    Code from: https://github.com/jlongster/canvas-game-bootstrap
 */
 (function() {
     var pressedKeys = {};
