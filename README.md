@@ -1,5 +1,5 @@
-simplest-pong-ever
-==================
+SimplestPongEver
+================
 
 Clone of pong written in html5 (canvas).
 
